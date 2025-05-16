@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build image
-        run: docker build -t yourdockerhubusername/weather-app:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/weather-app:latest .
 
       - name: Push image
-        run: docker push yourdockerhubusername/weather-app:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/weather-app:latest
