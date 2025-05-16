@@ -15,4 +15,3 @@ RUN apt-get update && apt-get install -y python3-tk
 
 # Command to run the application
 CMD ["python", "weather_app.py"]
-
