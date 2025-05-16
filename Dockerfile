@@ -1,17 +1,17 @@
-# Use an official Python runtime as the base image
+# Use an official Python runtime
 FROM python:3.10-slim
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the local files into the container
+# Copy files
 COPY . /app
 
-# Install the required dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Tkinter
-RUN apt-get update && apt-get install -y python3-tk
+# Expose Flask port
+EXPOSE 5000
 
-# Command to run the application
-CMD ["python", "weather_app.py"]
+# Run the app
+CMD ["python", "web_app.py"]
