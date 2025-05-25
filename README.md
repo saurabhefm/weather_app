@@ -35,3 +35,4 @@ A simple Flask-based weather application that fetches weather data for a given c
    ```bash
    git clone https://github.com/yourusername/weather-app.git
    cd weather-app
+   docker-compose up --build
