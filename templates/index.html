@@ -34,48 +34,53 @@
     </style>
 </head>
 <body>
-    <div class="weather-card">
-        <h1 class="text-center">🌤️ Weather App</h1>
-        <form method="POST" class="mb-3">
-            <div class="input-group">
-                <input type="text" name="city" class="form-control" placeholder="Enter City" required>
-                <button class="btn btn-primary" type="submit">Get Weather</button>
-            </div>
-        </form>
+    <div class="container text-center">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <div class="weather-card mb-4">
+                <h1 class="text-center">🌤️ Weather App</h1>
+                <form method="POST" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" name="city" class="form-control" placeholder="Enter City" required>
+                        <button class="btn btn-primary" type="submit">Get Weather</button>
+                    </div>
+                </form>
 
-        {% if error %}
-            <div class="alert alert-danger" role="alert">
-                {{ error }}
-            </div>
-        {% endif %}
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
 
-        {% if weather %}
-            <div class="mt-4">
-                <h4 class="text-success">Weather in {{ weather.city }}, {{ weather.state }}{{ ", " + weather.country if weather.country }}</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">🌡️ Temperature: {{ weather.temperature }} °C</li>
-                    <li class="list-group-item">🌥️ Description: {{ weather.description }}</li>
-                    <li class="list-group-item">💧 Humidity: {{ weather.humidity }}%</li>
-                    <li class="list-group-item">💨 Wind Speed: {{ weather.wind_speed }} km/h</li>
-                </ul>
+                {% if weather %}
+                    <div class="mt-4">
+                        <h4 class="text-success">Weather in {{ weather.city }}, {{ weather.state }}{{ ", " + weather.country if weather.country }}</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item">🌡️ Temperature: {{ weather.temperature }} °C</li>
+                            <li class="list-group-item">🌥️ Description: {{ weather.description }}</li>
+                            <li class="list-group-item">💧 Humidity: {{ weather.humidity }}%</li>
+                            <li class="list-group-item">💨 Wind Speed: {{ weather.wind_speed }} km/h</li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
-    </div>
-    {% if forecast %}
-    <div class="weather-card mt-4">
-        <h4 class="text-center text-primary">3-Day Forecast</h4>
-        <div class="d-flex justify-content-around text-center">
-            {% for day in forecast %}
-            <div class="border rounded p-2 bg-light mx-1" style="width: 30%;">
-                <h6>{{ day.date }}</h6>
-                <img src="{{ day.icon }}" alt="icon" width="50">
-                <p>{{ day.desc }}</p>
-                <p><strong>{{ day.avgtemp }}°C</strong></p>
+
+            {% if forecast %}
+            <div class="weather-card">
+                <h4 class="text-primary mb-4">3-Day Forecast</h4>
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    {% for day in forecast %}
+                    <div class="p-3 bg-light rounded shadow-sm" style="width: 150px;">
+                        <h6 class="text-muted">{{ day.date }}</h6>
+                        <img src="{{ day.icon }}" alt="icon" width="50" class="my-2">
+                        <p class="mb-1">{{ day.desc }}</p>
+                        <p class="fw-bold">{{ day.avgtemp }}°C</p>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
-    {% endif %}
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
