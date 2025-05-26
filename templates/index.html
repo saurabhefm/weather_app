@@ -71,21 +71,22 @@
                 {% endif %}
             </div>
 
-            {% if forecast %}
-            <div class="weather-card">
-                <h4 class="text-primary mb-4">3-Day Forecast</h4>
-                <div class="d-flex justify-content-center flex-wrap gap-3">
-                    {% for day in forecast %}
-                    <div class="p-3 bg-light rounded shadow-sm" style="width: 150px;">
-                        <h6 class="text-muted">{{ day.date }}</h6>
-                        <img src="{{ day.icon }}" alt="icon" width="50" class="my-2">
-                        <p class="mb-1">{{ day.desc }}</p>
-                        <p class="fw-bold">{{ day.avgtemp }}°C</p>
-                    </div>
-                    {% endfor %}
-                </div>
+           {% if forecast %}
+    <div class="mt-4 text-center">
+        <h4 class="text-primary mb-3">3-Day Forecast</h4>
+            <div class="d-flex justify-content-center overflow-auto gap-2 px-2">
+                {% for day in forecast %}
+                    <div class="bg-white rounded shadow-sm text-center px-3 py-2" style="min-width: 120px; max-width: 140px;">
+                        <small class="text-muted">{{ day.date }}</small>
+                        <img src="{{ day.icon }}" alt="icon" width="40" class="my-1">
+                        <div style="font-size: 0.85rem;">{{ day.desc }}</div>
+                    <div class="fw-bold">{{ day.avgtemp }}°C</div>
             </div>
-            {% endif %}
+                {% endfor %}
+    </div>
+    </div>
+                {% endif %}
+
         </div>
     </div>
 
