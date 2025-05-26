@@ -1,7 +1,5 @@
 import requests
 from flask import Flask, render_template, request
-from datetime import datetime
-
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -13,9 +11,7 @@ def get_location_details(city):
 
     if response.status_code == 200 and response.json():
         data = response.json()[0]
-        display_name = data.get("display_name", "")
         address = data.get("address", {})
-        print("ADDRESS DEBUG:", address)
         state = address.get("state", "")
         country = address.get("country", "")
         return state, country
@@ -31,18 +27,13 @@ def weather():
         city = request.form.get("city")
         if city:
             weather_url = f"https://wttr.in/{city}?format=j1"
-            response = requests.get(weather_url)
-            if response.status_code == 200:
+            try:
+                response = requests.get(weather_url)
+                response.raise_for_status()
                 data = response.json()
 
                 # Get state and country
                 state, country = get_location_details(city)
-
-                location_full = f"{city}"
-                if state:
-                    location_full += f", {state}"
-                if country:
-                    location_full += f", {country}"
 
                 weather_data = {
                     "city": city,
@@ -53,17 +44,23 @@ def weather():
                     "humidity": data["current_condition"][0]["humidity"],
                     "wind_speed": data["current_condition"][0]["windspeedKmph"]
                 }
-                # Extract 3-day forecast
+
+                # 3-day forecast
                 forecast_data = []
                 for day in data["weather"]:
+                    desc = day["hourly"][4]["weatherDesc"][0]["value"]
+                    icon_url = day["hourly"][4]["weatherIconUrl"][0]["value"].replace("//", "https://")
+
                     forecast_data.append({
                         "date": day["date"],
                         "avgtemp": day["avgtempC"],
-                        "desc": day["hourly"][4]["weatherDesc"][0]["value"],  # Midday approx
-                        "icon": day["hourly"][4]["weatherIconUrl"][0]["value"]
+                        "desc": desc,
+                        "icon": icon_url
                     })
-            else:
-                error = "City not found or invalid request."
+
+            except Exception as e:
+                print("Error fetching weather data:", e)
+                error = "City not found or API issue."
         else:
             error = "Please enter a city name."
 
@@ -71,3 +68,5 @@ def weather():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+# This code is a Flask web application that fetches weather data for a given city.
+# It uses the wttr.in API for current weather and a 3-day forecast.
