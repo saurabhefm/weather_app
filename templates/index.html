@@ -61,6 +61,21 @@
             </div>
         {% endif %}
     </div>
+    {% if forecast %}
++    <div class="forecast-box">
++        <h2>3-Day Forecast</h2>
++        <div style="display: flex; justify-content: space-around;">
++            {% for day in forecast %}
++            <div class="forecast-day">
++                <h4>{{ day.date }}</h4>
++                <img src="{{ day.icon }}" alt="icon">
++                <p>{{ day.desc }}</p>
++                <p><strong>{{ day.avgtemp }}°C</strong></p>
++            </div>
++            {% endfor %}
++        </div>
++    </div>
++    {% endif %}
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
