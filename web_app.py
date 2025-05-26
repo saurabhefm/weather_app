@@ -1,6 +1,6 @@
 import requests
 from flask import Flask, render_template, request
-
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -24,6 +24,7 @@ def get_location_details(city):
 @app.route("/", methods=["GET", "POST"])
 def weather():
     weather_data = None
+    forecast_data = None
     error = None
 
     if request.method == "POST":
@@ -52,13 +53,21 @@ def weather():
                     "humidity": data["current_condition"][0]["humidity"],
                     "wind_speed": data["current_condition"][0]["windspeedKmph"]
                 }
-
+                # Extract 3-day forecast
+                forecast_data = []
+                for day in data["weather"]:
+                    forecast_data.append({
+                        "date": day["date"],
+                        "avgtemp": day["avgtempC"],
+                        "desc": day["hourly"][4]["weatherDesc"][0]["value"],  # Midday approx
+                        "icon": day["hourly"][4]["weatherIconUrl"][0]["value"]
+                    })
             else:
                 error = "City not found or invalid request."
         else:
             error = "Please enter a city name."
 
-    return render_template("index.html", weather=weather_data, error=error)
+    return render_template("index.html", weather=weather_data, forecast=forecast_data, error=error)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
